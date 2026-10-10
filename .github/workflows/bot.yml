@@ -1,0 +1,40 @@
+name: Discord Loop Bot
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Backup trigger every 6 hours just in case
+    - cron: '0 */6 * * *'
+
+jobs:
+  run-bot:
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+      contents: read
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Run Discord Sender
+        env:
+          USER_TOKEN: ${{ secrets.USER_TOKEN }}
+          CHANNEL_ID: ${{ secrets.CHANNEL_ID }}
+          MESSAGES_PER_SECOND: ${{ secrets.MESSAGES_PER_SECOND }}
+          MAX_RUN_SECONDS: 19800 # 5 hours 30 mins
+        run: |
+          python sender.py
+
+      - name: Auto-Restart Workflow (Always / Cancelled / Complete)
+        if: always()
+        env:
+          GH_TOKEN: ${{ secrets.PAT_TOKEN || secrets.GITHUB_TOKEN }}
+        run: |
+          echo "Run completed or cancelled. Firing instant restart..."
+          gh workflow run bot.yml --repo "${{ github.repository }}" || true
