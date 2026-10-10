@@ -31,10 +31,10 @@ jobs:
         run: |
           python sender.py
 
-      - name: Auto-Restart Workflow (Always / Cancelled / Complete)
+      - name: 🔄 Auto-Restart Server
         if: always()
         env:
-          GH_TOKEN: ${{ secrets.PAT_TOKEN || secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          echo "Run completed or cancelled. Firing instant restart..."
-          gh workflow run bot.yml --repo "${{ github.repository }}" || true
+          echo "Triggering next workflow run..."
+          gh workflow run bot.yml --repo ${{ github.repository }} --ref ${{ github.ref_name }}

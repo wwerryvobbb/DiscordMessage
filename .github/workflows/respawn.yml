@@ -16,7 +16,7 @@ jobs:
     steps:
       - name: Trigger Instant Restart
         env:
-          GH_TOKEN: ${{ secrets.PAT_TOKEN || secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           echo "Main workflow was cancelled. Instant respawn triggered..."
-          gh workflow run bot.yml --repo "${{ github.repository }}" || true
+          gh workflow run bot.yml --repo ${{ github.repository }} --ref ${{ github.event.workflow_run.head_branch }} || true

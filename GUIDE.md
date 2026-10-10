@@ -2,6 +2,8 @@
 
 ## Repository Secret Names
 
+You only need **3 secrets** now (NO PAT_TOKEN needed):
+
 Add these in **Settings** -> **Secrets and variables** -> **Actions** -> **New repository secret**:
 
 ```text
@@ -28,31 +30,14 @@ G=0000000000000000000
 MESSAGES_PER_SECOND
 ```
 
-```text
-PAT_TOKEN
-```
-
 ---
 
-## Workflow Permissions
+## Workflow Permissions (Required for Auto-Restart without PAT)
 
 1. Open **Settings** -> **Actions** -> **General**
 2. Under **Workflow permissions**, choose **Read and write permissions**
 3. Check **Allow GitHub Actions to create and approve pull requests**
 4. Click **Save**
-
----
-
-## Push To GitHub
-
-```bash
-git init
-git add .
-git commit -m "bot"
-git branch -M main
-git remote add origin <YOUR_GITHUB_REPO_URL>
-git push -u origin main
-```
 
 ---
 
