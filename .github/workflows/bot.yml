@@ -32,7 +32,7 @@ jobs:
           python sender.py
 
       - name: 🔄 Auto-Restart Server
-        if: always()
+        if: success()
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
